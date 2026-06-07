@@ -1,0 +1,124 @@
+.lb-loading {
+  text-align: center;
+  padding: 60px;
+  color: #888;
+}
+
+.lb-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lb-title { margin: 0; font-size: 1.4rem; }
+
+.lb-pot {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e8c900;
+  background: #1e1e0a;
+  border: 1px solid #e8c900;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.lb-updated {
+  margin: -10px 0 0;
+  font-size: 0.75rem;
+  color: #555;
+}
+
+/* ── Table ──────────────────────────────────────────────────── */
+.lb-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lb-thead,
+.lb-row {
+  display: grid;
+  grid-template-columns: 36px 1fr 72px 72px 72px;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  gap: 4px;
+}
+
+.lb-thead {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #555;
+}
+
+.lb-row {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  font-size: 0.9rem;
+  transition: border-color 0.15s;
+}
+
+.lb-row.leader {
+  border-color: #e8c900;
+  background: #1e1e0a;
+}
+
+.lb-col-rank   { font-size: 1rem; text-align: center; }
+.lb-col-player { font-weight: 600; }
+.lb-col-score  { text-align: right; color: #888; font-size: 0.85rem; }
+.lb-col-total  { text-align: right; font-weight: 700; color: #e8c900; font-size: 1rem; }
+
+.lb-row.leader .lb-col-total { font-size: 1.1rem; }
+
+.lb-pending { font-size: 0.72rem; color: #555; font-weight: 400; }
+
+/* ── Scoring guide ──────────────────────────────────────────── */
+.lb-scoring {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.lb-scoring-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.lb-scoring-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 500px) {
+  .lb-scoring-cols { grid-template-columns: 1fr; }
+  .lb-thead,
+  .lb-row { grid-template-columns: 30px 1fr 55px 55px 55px; }
+}
+
+.lb-scoring-cols strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.lb-scoring-cols ul {
+  margin: 0;
+  padding-left: 16px;
+  color: #888;
+  line-height: 1.8;
+}

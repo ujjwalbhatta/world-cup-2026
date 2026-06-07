@@ -3,11 +3,13 @@ import { NamePicker } from './components/NamePicker';
 import { GroupPicker } from './components/GroupPicker';
 import { Bracket } from './components/Bracket';
 import { MatchList } from './components/MatchList';
+import { Leaderboard } from './components/Leaderboard';
+import { ResultsAdmin } from './components/ResultsAdmin';
 import './App.css';
 
 const LOCK_TIME = new Date('2026-06-11T18:00:00Z');
 
-type View = 'home' | 'groups' | 'bracket' | 'match';
+type View = 'home' | 'groups' | 'bracket' | 'match' | 'leaderboard' | 'admin';
 
 export default function App() {
   const [player, setPlayer] = useState<string | null>(
@@ -21,9 +23,6 @@ export default function App() {
     setPlayer(name);
   }
 
-  // No logout — once you pick your name it's yours for this device.
-  // Prevents accidentally switching to someone else's picks.
-
   if (!player) return <NamePicker onSelect={selectPlayer} />;
 
   return (
@@ -31,10 +30,12 @@ export default function App() {
       <header className="app-header">
         <span className="logo">⚽ WC 2026</span>
         <nav>
-          <button onClick={() => setView('home')}    className={view === 'home'    ? 'active' : ''}>Home</button>
-          <button onClick={() => setView('groups')}  className={view === 'groups'  ? 'active' : ''}>Groups</button>
-          <button onClick={() => setView('bracket')} className={view === 'bracket' ? 'active' : ''}>Bracket</button>
-          <button onClick={() => setView('match')}   className={view === 'match'   ? 'active' : ''}>Match Picks</button>
+          <button onClick={() => setView('home')}        className={view === 'home'        ? 'active' : ''}>Home</button>
+          <button onClick={() => setView('groups')}      className={view === 'groups'      ? 'active' : ''}>Groups</button>
+          <button onClick={() => setView('bracket')}     className={view === 'bracket'     ? 'active' : ''}>Bracket</button>
+          <button onClick={() => setView('match')}       className={view === 'match'       ? 'active' : ''}>Matches</button>
+          <button onClick={() => setView('leaderboard')} className={view === 'leaderboard' ? 'active' : ''}>🏅 Standings</button>
+          <button onClick={() => setView('admin')}       className={view === 'admin'       ? 'active' : ''}>Admin</button>
         </nav>
         <span className="player-tag">👤 {player}</span>
       </header>
@@ -47,7 +48,7 @@ export default function App() {
 
             {isLocked ? (
               <div className="status locked">
-                🔒 Bracket picks are locked. Check the leaderboard!
+                🔒 Bracket picks are locked. Check the standings!
               </div>
             ) : (
               <div className="status open">
@@ -68,23 +69,20 @@ export default function App() {
                 <button>Go →</button>
               </div>
             </div>
+
+            <div className="contest-card wide" onClick={() => setView('leaderboard')}>
+              <h3>🏅 Live Standings</h3>
+              <p>See where everyone sits — combined bracket + match score. $60 goes to the top.</p>
+              <button>See Standings →</button>
+            </div>
           </div>
         )}
 
-        {view === 'groups' && (
-          <GroupPicker
-            player={player}
-            onComplete={() => setView('bracket')}
-          />
-        )}
-
-        {view === 'bracket' && (
-          <Bracket player={player} />
-        )}
-
-        {view === 'match' && (
-          <MatchList player={player} />
-        )}
+        {view === 'groups'      && <GroupPicker player={player} onComplete={() => setView('bracket')} />}
+        {view === 'bracket'     && <Bracket player={player} />}
+        {view === 'match'       && <MatchList player={player} />}
+        {view === 'leaderboard' && <Leaderboard />}
+        {view === 'admin'       && <ResultsAdmin />}
       </main>
     </div>
   );

@@ -78,7 +78,37 @@
 }
 
 .name-picker h1 { font-size: 2.2rem; margin: 0; }
-.name-picker p  { color: #aaa; margin: 0; font-size: 1.1rem; }
+.name-picker p  { color: #aaa; margin: 0; font-size: 1rem; max-width: 340px; }
+
+.pin-input {
+  width: 180px;
+  background: #16213e;
+  border: 2px solid #333;
+  color: #fff;
+  font-size: 1.4rem;
+  letter-spacing: 0.4em;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+}
+.pin-input:focus { border-color: #e8c900; }
+
+/* hide number spinner arrows */
+.pin-input::-webkit-outer-spin-button,
+.pin-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.pin-input[type=number] { -moz-appearance: textfield; }
+
+.pin-error { color: #c07070; margin: 0; font-size: 0.85rem; }
+
+.pin-back {
+  background: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
 
 .player-grid {
   display: grid;
@@ -150,6 +180,10 @@
   border-color: #e8c900;
   transform: translateY(-2px);
 }
+
+.contest-card.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; }
+.contest-card.wide h3 { white-space: nowrap; }
+.contest-card.wide p  { flex: 1; }
 
 .contest-card h3 { margin: 0; font-size: 1.1rem; }
 .contest-card p  { margin: 0; color: #888; font-size: 0.9rem; flex: 1; }

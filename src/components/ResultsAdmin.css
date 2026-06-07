@@ -1,0 +1,137 @@
+.admin-gate {
+  max-width: 360px;
+  margin: 60px auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.admin-gate h2 { margin: 0; }
+.admin-gate p  { color: #888; margin: 0; }
+
+.admin-pw-row {
+  display: flex;
+  gap: 8px;
+}
+.admin-pw-row input {
+  flex: 1;
+  background: #16213e;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 1rem;
+}
+.admin-pw-row button {
+  background: #e8c900;
+  color: #1a1a2e;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 7px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.admin-error { color: #c07070; margin: 0; font-size: 0.85rem; }
+
+/* ── Admin wrap ─────────────────────────────────────────────── */
+.admin-wrap { display: flex; flex-direction: column; gap: 16px; }
+.admin-header h2 { margin: 0; }
+.admin-sub { margin: 4px 0 0; color: #888; font-size: 0.85rem; }
+
+.admin-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.admin-tabs button {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  color: #888;
+  padding: 7px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: border-color 0.15s, color 0.15s;
+}
+.admin-tabs button.active { border-color: #e8c900; color: #e8c900; }
+
+.admin-section { display: flex; flex-direction: column; gap: 8px; }
+.admin-hint { color: #666; font-size: 0.85rem; margin: 0 0 4px; font-style: italic; }
+
+/* ── Match rows ─────────────────────────────────────────────── */
+.admin-match-row,
+.admin-ko-row {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.amr-teams { flex: 1; font-size: 0.88rem; min-width: 160px; }
+.amr-id { font-size: 0.72rem; color: #555; width: 80px; flex-shrink: 0; }
+
+.amr-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+.amr-btn {
+  background: #0f172a;
+  border: 1px solid #2a2a4a;
+  color: #888;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+  white-space: nowrap;
+}
+.amr-btn:hover  { border-color: #4a6fa5; color: #fff; }
+.amr-btn.active { border-color: #7ec99a; background: #0f2d1a; color: #7ec99a; font-weight: 700; }
+
+/* ── Knockout teams ─────────────────────────────────────────── */
+.admin-ko-teams {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 200px;
+}
+.admin-ko-teams input {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid #2a2a4a;
+  color: #ccc;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  min-width: 0;
+}
+.ko-vs { font-size: 0.72rem; color: #444; flex-shrink: 0; }
+
+/* ── Bracket group rows ─────────────────────────────────────── */
+.admin-group-row {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.admin-group-label {
+  font-weight: 700;
+  font-size: 0.88rem;
+  width: 64px;
+  flex-shrink: 0;
+}
+.admin-group-inputs { display: flex; gap: 8px; flex: 1; }
+.admin-group-inputs select {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid #2a2a4a;
+  color: #ccc;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+}
