@@ -35,7 +35,15 @@ export function usePrediction(player: string) {
       .then(({ data }) => {
         if (cancelled) return;
         if (data) {
-          const pred = data.data as Prediction;
+          // Merge with empty so fields always exist (PIN setup only stores {pin:…})
+          const remote = data.data as Partial<Prediction> & { pin?: string };
+          const pred: Prediction = {
+            ...emptyPrediction(player),
+            ...remote,
+            groups:     remote.groups     ?? ({} as Prediction['groups']),
+            bestThirds: remote.bestThirds ?? [],
+            winners:    remote.winners    ?? {},
+          };
           setPrediction(pred);
           localStorage.setItem(localKey(player), JSON.stringify(pred));
           setLocked(!!data.locked_at);
@@ -52,9 +60,13 @@ export function usePrediction(player: string) {
 
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(async () => {
+      // Fetch current pin so we don't overwrite it on save
+      const { data: existing } = await supabase
+        .from('predictions').select('data').eq('player', player).maybeSingle();
+      const pin = (existing?.data as Record<string, unknown> | null)?.pin;
       await supabase.from('predictions').upsert({
         player,
-        data: next,
+        data: pin ? { ...next, pin } : next,
         updated_at: new Date().toISOString(),
       });
     }, 800);
