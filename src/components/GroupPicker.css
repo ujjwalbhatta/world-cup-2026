@@ -120,30 +120,152 @@
 .gc-row select.filled { border-color: #4a6fa5; color: #fff; }
 .gc-row select:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* ── Best thirds grid ───────────────────────────────────────── */
-.thirds-grid {
+/* ── Best thirds — two-panel layout ────────────────────────── */
+.thirds-panels {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
 }
 
-.third-btn {
-  background: #16213e;
-  border: 1px solid #2a2a4a;
-  border-radius: 10px;
-  padding: 12px 14px;
-  cursor: pointer;
+@media (max-width: 640px) {
+  .thirds-panels { grid-template-columns: 1fr; }
+}
+
+.thirds-panel-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+/* ── Pool (left) ────────────────────────────────────────────── */
+.thirds-pool {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  text-align: left;
-  transition: border-color 0.15s, transform 0.1s;
-  position: relative;
+  gap: 6px;
 }
-.third-btn:hover:not(.disabled) { border-color: #4a6fa5; transform: translateY(-1px); }
-.third-btn.selected { border-color: #e8c900; background: #1e1e0a; }
-.third-btn.disabled { opacity: 0.4; cursor: not-allowed; }
 
-.third-group { font-size: 0.75rem; color: #888; }
-.third-team  { font-size: 0.95rem; font-weight: 600; color: #fff; }
-.third-check { position: absolute; top: 10px; right: 12px; color: #e8c900; font-weight: 700; }
+.pool-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 9px 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, opacity 0.15s;
+  width: 100%;
+}
+
+.pool-team:hover:not(:disabled):not(.ranked):not(.full) {
+  border-color: #4a6fa5;
+}
+
+.pool-team.ranked {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pool-team.full {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.pool-group {
+  font-size: 0.72rem;
+  color: #888;
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.pool-name {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.pool-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #e8c900;
+  background: #2a2a00;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.pool-add {
+  font-size: 1rem;
+  color: #4a6fa5;
+  font-weight: 700;
+}
+
+/* ── Standings (right) ──────────────────────────────────────── */
+.thirds-standings {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.standing-slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 9px 12px;
+  border: 1px solid #2a2a4a;
+  transition: border-color 0.15s;
+}
+
+.standing-slot.filled {
+  background: #16213e;
+  border-color: #2d6a3f;
+  cursor: pointer;
+}
+
+.standing-slot.filled:hover { border-color: #c0392b; }
+
+.standing-slot.empty {
+  background: #0d1117;
+  border-style: dashed;
+}
+
+.slot-rank {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #e8c900;
+  width: 20px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.slot-group {
+  font-size: 0.72rem;
+  color: #888;
+  width: 48px;
+  flex-shrink: 0;
+}
+
+.slot-team {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.slot-empty {
+  flex: 1;
+  font-size: 0.85rem;
+  color: #444;
+  font-style: italic;
+}
+
+.slot-remove {
+  font-size: 0.75rem;
+  color: #666;
+}

@@ -50,28 +50,66 @@ export function GroupPicker({ player, onComplete }: Props) {
           <button className="gp-back" onClick={() => setStep('groups')}>← Groups</button>
           <h2>Best 8 Third-Place Teams</h2>
           <span className={`gp-count ${thirdsCount === 8 ? 'done' : ''}`}>
-            {thirdsCount} / 8 selected
+            {thirdsCount} / 8 advancing
           </span>
         </div>
-        <p className="gp-hint">Pick exactly 8 of the 12 third-place finishers to advance.</p>
+        <p className="gp-hint">
+          Click a team to add them to the standings. Click a ranked team to remove them.
+          {thirdsCount < 8 && <> <strong>{8 - thirdsCount} spot{8 - thirdsCount !== 1 ? 's' : ''} left.</strong></>}
+        </p>
 
-        <div className="thirds-grid">
-          {thirdCandidates.map(({ group, team }) => {
-            const selected = selectedThirds.includes(team);
-            const disabled = !selected && thirdsCount >= 8;
-            return (
-              <button
-                key={group}
-                className={`third-btn ${selected ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
-                onClick={() => toggleThird(team)}
-                disabled={locked}
-              >
-                <span className="third-group">Group {group}</span>
-                <span className="third-team">{team}</span>
-                {selected && <span className="third-check">✓</span>}
-              </button>
-            );
-          })}
+        <div className="thirds-panels">
+          {/* Left — pool of all 12 thirds */}
+          <div className="thirds-pool">
+            <div className="thirds-panel-title">12 Third-Place Finishers</div>
+            {thirdCandidates.map(({ group, team }) => {
+              const ranked = selectedThirds.includes(team);
+              const full = !ranked && thirdsCount >= 8;
+              return (
+                <button
+                  key={group}
+                  className={`pool-team ${ranked ? 'ranked' : ''} ${full ? 'full' : ''}`}
+                  onClick={() => toggleThird(team)}
+                  disabled={locked}
+                >
+                  <span className="pool-group">Group {group}</span>
+                  <span className="pool-name">{team}</span>
+                  {ranked && <span className="pool-badge">#{selectedThirds.indexOf(team) + 1}</span>}
+                  {!ranked && !full && <span className="pool-add">+</span>}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right — numbered standings slots */}
+          <div className="thirds-standings">
+            <div className="thirds-panel-title">Advancing to Round of 32</div>
+            {Array.from({ length: 8 }, (_, i) => {
+              const team = selectedThirds[i];
+              const group = team
+                ? thirdCandidates.find((c) => c.team === team)?.group
+                : null;
+              return (
+                <div
+                  key={i}
+                  className={`standing-slot ${team ? 'filled' : 'empty'}`}
+                  onClick={() => team && toggleThird(team)}
+                  title={team ? `Remove ${team}` : ''}
+                >
+                  <span className="slot-rank">{i + 1}</span>
+                  {team ? (
+                    <>
+                      <span className="slot-group">Group {group}</span>
+                      <span className="slot-team">{team}</span>
+                      {!locked && <span className="slot-remove">✕</span>}
+                    </>
+                  ) : (
+                    <span className="slot-empty">— pick a team</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {thirdsCount === 8 && (
