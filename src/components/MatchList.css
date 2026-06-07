@@ -1,0 +1,182 @@
+.ml-loading {
+  text-align: center;
+  padding: 60px;
+  color: #888;
+}
+
+.ml-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* ── Sections ───────────────────────────────────────────────── */
+.ml-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ml-section-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #e8c900;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #2a2a4a;
+}
+
+.ml-hint {
+  color: #555;
+  font-style: italic;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ── Day group ──────────────────────────────────────────────── */
+.ml-day {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ml-day-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 0;
+}
+
+.ml-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── Match row ──────────────────────────────────────────────── */
+.match-row {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  transition: border-color 0.15s;
+}
+
+.match-row.picked { border-color: #2d4a2d; }
+.match-row.kicked { opacity: 0.85; }
+
+/* ── Teams ──────────────────────────────────────────────────── */
+.mr-teams {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.mr-team {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ccc;
+  white-space: nowrap;
+}
+
+.mr-team.winner {
+  color: #e8c900;
+  font-weight: 700;
+}
+
+.mr-sep {
+  font-size: 0.72rem;
+  color: #444;
+  flex-shrink: 0;
+}
+
+.mr-draw-badge {
+  font-size: 0.7rem;
+  background: #2a2a4a;
+  color: #aaa;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* ── Meta (time + result icon) ──────────────────────────────── */
+.mr-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.mr-kickoff {
+  font-size: 0.72rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.res-correct { color: #7ec99a; font-weight: 700; font-size: 0.9rem; }
+.res-wrong   { color: #c07070; font-weight: 700; font-size: 0.9rem; }
+
+/* ── Pick buttons ───────────────────────────────────────────── */
+.mr-picks {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.pick-btn {
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  background: #0f172a;
+  border: 1px solid #2a2a4a;
+  color: #888;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+}
+
+.pick-btn:hover:not(:disabled) {
+  border-color: #4a6fa5;
+  color: #fff;
+  background: #1a2a4a;
+}
+
+.pick-btn.picked {
+  border-color: #4a6fa5;
+  background: #1a2a4a;
+  color: #fff;
+  font-weight: 700;
+}
+
+.pick-btn.correct {
+  border-color: #2d6a3f;
+  background: #0f2d1a;
+  color: #7ec99a;
+  font-weight: 700;
+}
+
+.pick-btn.wrong {
+  border-color: #6a2d2d;
+  background: #2d0f0f;
+  color: #c07070;
+}
+
+.pick-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (max-width: 520px) {
+  .mr-teams { min-width: 0; }
+  .pick-btn { padding: 6px 7px; font-size: 0.72rem; }
+}

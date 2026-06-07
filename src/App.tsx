@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NamePicker } from './components/NamePicker';
 import { GroupPicker } from './components/GroupPicker';
 import { Bracket } from './components/Bracket';
+import { MatchList } from './components/MatchList';
 import './App.css';
 
 const LOCK_TIME = new Date('2026-06-11T18:00:00Z');
@@ -82,10 +83,7 @@ export default function App() {
         )}
 
         {view === 'match' && (
-          <div className="coming-soon">
-            <h2>🎯 Match Predictor</h2>
-            <p>Coming soon — all 104 matches, pick Home / Draw / Away before each kickoff.</p>
-          </div>
+          <MatchList player={player} />
         )}
       </main>
     </div>
