@@ -1,0 +1,142 @@
+.br-loading,
+.br-incomplete {
+  text-align: center;
+  padding: 60px 20px;
+  color: #888;
+}
+
+.br-locked {
+  background: #2d1a0f;
+  border: 1px solid #6a3d2d;
+  color: #c99a7e;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.bracket-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bracket-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+/* ── Round column ───────────────────────────────────────────── */
+.br-round {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+
+.br-round-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #e8c900;
+  padding: 4px 0;
+  white-space: nowrap;
+}
+
+.br-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Match card ─────────────────────────────────────────────── */
+.match-card {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.match-card.unknown { opacity: 0.4; }
+
+.mc-id {
+  font-size: 0.65rem;
+  color: #555;
+  margin-bottom: 2px;
+}
+
+.mc-vs {
+  font-size: 0.7rem;
+  color: #555;
+  text-align: center;
+}
+
+.mc-placeholder {
+  font-size: 0.85rem;
+  color: #555;
+  text-align: center;
+  padding: 4px 0;
+}
+
+/* ── Team button ────────────────────────────────────────────── */
+.team-btn {
+  width: 100%;
+  background: #0f172a;
+  border: 1px solid #2a2a4a;
+  color: #ccc;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-btn:hover:not(:disabled) {
+  border-color: #4a6fa5;
+  background: #1a2a4a;
+  color: #fff;
+}
+
+.team-btn.winner {
+  border-color: #e8c900;
+  background: #1e1e0a;
+  color: #e8c900;
+  font-weight: 600;
+}
+
+.team-btn.empty {
+  color: #444;
+  cursor: default;
+}
+
+.team-btn:disabled { cursor: not-allowed; }
+
+.team-check {
+  font-size: 0.75rem;
+  color: #e8c900;
+  flex-shrink: 0;
+}
+
+/* ── Champion ───────────────────────────────────────────────── */
+.br-champion {
+  background: #1e1e0a;
+  border: 2px solid #e8c900;
+  color: #e8c900;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  text-align: center;
+}

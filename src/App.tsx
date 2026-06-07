@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { NamePicker } from './components/NamePicker';
 import { GroupPicker } from './components/GroupPicker';
+import { Bracket } from './components/Bracket';
 import './App.css';
 
 const LOCK_TIME = new Date('2026-06-11T18:00:00Z');
 
-type View = 'home' | 'bracket' | 'match';
+type View = 'home' | 'groups' | 'bracket' | 'match';
 
 export default function App() {
   const [player, setPlayer] = useState<string | null>(
@@ -30,6 +31,7 @@ export default function App() {
         <span className="logo">⚽ WC 2026</span>
         <nav>
           <button onClick={() => setView('home')}    className={view === 'home'    ? 'active' : ''}>Home</button>
+          <button onClick={() => setView('groups')}  className={view === 'groups'  ? 'active' : ''}>Groups</button>
           <button onClick={() => setView('bracket')} className={view === 'bracket' ? 'active' : ''}>Bracket</button>
           <button onClick={() => setView('match')}   className={view === 'match'   ? 'active' : ''}>Match Picks</button>
         </nav>
@@ -54,7 +56,7 @@ export default function App() {
             )}
 
             <div className="contest-cards">
-              <div className="contest-card" onClick={() => setView('bracket')}>
+              <div className="contest-card" onClick={() => setView('groups')}>
                 <h3>🏆 Bracket Predictor</h3>
                 <p>Pick every team through the knockout bracket before kickoff. Big points for calling the champion.</p>
                 <button>Go →</button>
@@ -68,11 +70,15 @@ export default function App() {
           </div>
         )}
 
-        {view === 'bracket' && (
+        {view === 'groups' && (
           <GroupPicker
             player={player}
-            onComplete={() => setView('home')}
+            onComplete={() => setView('bracket')}
           />
+        )}
+
+        {view === 'bracket' && (
+          <Bracket player={player} />
         )}
 
         {view === 'match' && (
