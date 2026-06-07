@@ -34,15 +34,11 @@
 .admin-error { color: #c07070; margin: 0; font-size: 0.85rem; }
 
 /* ── Admin wrap ─────────────────────────────────────────────── */
-.admin-wrap { display: flex; flex-direction: column; gap: 16px; }
+.admin-wrap   { display: flex; flex-direction: column; gap: 16px; }
 .admin-header h2 { margin: 0; }
-.admin-sub { margin: 4px 0 0; color: #888; font-size: 0.85rem; }
+.admin-sub    { margin: 4px 0 0; color: #888; font-size: 0.85rem; }
 
-.admin-tabs {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
+.admin-tabs   { display: flex; gap: 6px; flex-wrap: wrap; }
 .admin-tabs button {
   background: #16213e;
   border: 1px solid #2a2a4a;
@@ -50,29 +46,39 @@
   padding: 7px 14px;
   border-radius: 7px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   transition: border-color 0.15s, color 0.15s;
 }
-.admin-tabs button.active { border-color: #e8c900; color: #e8c900; }
+.admin-tabs button.active { border-color: #e8c900; color: #e8c900; font-weight: 600; }
 
-.admin-section { display: flex; flex-direction: column; gap: 8px; }
-.admin-hint { color: #666; font-size: 0.85rem; margin: 0 0 4px; font-style: italic; }
+.admin-section { display: flex; flex-direction: column; gap: 6px; }
+.admin-hint {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 0 0 6px;
+  font-style: italic;
+  line-height: 1.5;
+}
 
-/* ── Match rows ─────────────────────────────────────────────── */
-.admin-match-row,
-.admin-ko-row {
+/* ── Match row ──────────────────────────────────────────────── */
+.admin-match-row {
   background: #16213e;
   border: 1px solid #2a2a4a;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  transition: border-color 0.15s;
 }
+.admin-match-row.settled { border-color: #2d4a2d; }
+.admin-match-row.pending { opacity: 0.45; }
 
-.amr-teams { flex: 1; font-size: 0.88rem; min-width: 160px; }
-.amr-id { font-size: 0.72rem; color: #555; width: 80px; flex-shrink: 0; }
+.amr-id     { font-size: 0.7rem; color: #555; width: 36px; flex-shrink: 0; }
+.amr-teams  { flex: 1; font-size: 0.88rem; min-width: 140px; }
+.amr-vs     { color: #444; font-size: 0.72rem; margin: 0 4px; }
+.amr-pending { flex: 1; font-size: 0.8rem; color: #444; font-style: italic; }
 
 .amr-btns { display: flex; gap: 5px; flex-wrap: wrap; }
 .amr-btn {
@@ -83,55 +89,110 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.78rem;
-  transition: border-color 0.12s, color 0.12s, background 0.12s;
   white-space: nowrap;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
 }
 .amr-btn:hover  { border-color: #4a6fa5; color: #fff; }
 .amr-btn.active { border-color: #7ec99a; background: #0f2d1a; color: #7ec99a; font-weight: 700; }
 
-/* ── Knockout teams ─────────────────────────────────────────── */
-.admin-ko-teams {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-  min-width: 200px;
-}
-.admin-ko-teams input {
-  flex: 1;
-  background: #0f172a;
-  border: 1px solid #2a2a4a;
-  color: #ccc;
-  padding: 5px 8px;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  min-width: 0;
-}
-.ko-vs { font-size: 0.72rem; color: #444; flex-shrink: 0; }
-
-/* ── Bracket group rows ─────────────────────────────────────── */
+/* ── Group standings ────────────────────────────────────────── */
 .admin-group-row {
   background: #16213e;
   border: 1px solid #2a2a4a;
   border-radius: 8px;
   padding: 10px 12px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .admin-group-label {
   font-weight: 700;
   font-size: 0.88rem;
-  width: 64px;
+  width: 60px;
   flex-shrink: 0;
+  padding-top: 22px;
 }
-.admin-group-inputs { display: flex; gap: 8px; flex: 1; }
-.admin-group-inputs select {
+.admin-group-inputs {
+  display: flex;
+  gap: 8px;
   flex: 1;
+  flex-wrap: wrap;
+}
+.admin-pos-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 110px;
+}
+.admin-pos-label {
+  font-size: 0.7rem;
+  color: #888;
+  font-weight: 600;
+}
+.admin-pos-col select {
   background: #0f172a;
   border: 1px solid #2a2a4a;
   color: #ccc;
   padding: 5px 8px;
   border-radius: 6px;
   font-size: 0.82rem;
+}
+
+/* ── Thirds (reuse GroupPicker styles) ──────────────────────── */
+.thirds-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 640px) { .thirds-panels { grid-template-columns: 1fr; } }
+
+.thirds-pool, .thirds-standings { display: flex; flex-direction: column; gap: 6px; }
+
+.thirds-panel-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.pool-team {
+  display: flex; align-items: center; gap: 8px;
+  background: #16213e; border: 1px solid #2a2a4a;
+  border-radius: 8px; padding: 9px 12px;
+  cursor: pointer; width: 100%; text-align: left;
+  transition: border-color 0.15s, opacity 0.15s;
+}
+.pool-team:hover:not(.ranked):not(.full) { border-color: #4a6fa5; }
+.pool-team.ranked { opacity: 0.4; cursor: default; }
+.pool-team.full   { opacity: 0.25; cursor: not-allowed; }
+.pool-group { font-size: 0.72rem; color: #888; width: 48px; flex-shrink: 0; }
+.pool-name  { flex: 1; font-size: 0.9rem; font-weight: 600; color: #fff; }
+.pool-badge { font-size: 0.75rem; font-weight: 700; color: #e8c900; background: #2a2a00; border-radius: 4px; padding: 2px 6px; }
+.pool-add   { font-size: 1rem; color: #4a6fa5; font-weight: 700; }
+
+.standing-slot {
+  display: flex; align-items: center; gap: 10px;
+  border-radius: 8px; padding: 9px 12px;
+  border: 1px solid #2a2a4a; transition: border-color 0.15s;
+}
+.standing-slot.filled  { background: #16213e; border-color: #2d6a3f; cursor: pointer; }
+.standing-slot.filled:hover { border-color: #c0392b; }
+.standing-slot.empty   { background: #0d1117; border-style: dashed; }
+.slot-rank  { font-size: 1rem; font-weight: 800; color: #e8c900; width: 20px; text-align: center; }
+.slot-group { font-size: 0.72rem; color: #888; width: 48px; flex-shrink: 0; }
+.slot-team  { flex: 1; font-size: 0.9rem; font-weight: 600; color: #fff; }
+.slot-empty { flex: 1; font-size: 0.85rem; color: #444; font-style: italic; }
+.slot-remove { font-size: 0.75rem; color: #666; }
+
+/* ── Knockout section headers ───────────────────────────────── */
+.admin-ko-section { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.admin-ko-round-label {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #e8c900; padding: 4px 0;
+  border-bottom: 1px solid #2a2a4a; margin-bottom: 2px;
 }
