@@ -26,3 +26,7 @@ dist-ssr
 # Environment
 .env
 .env.local
+
+# Internal planning docs
+Project1.md
+Project2.md
