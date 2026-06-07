@@ -1,73 +1,87 @@
-# React + TypeScript + Vite
+# World Cup 2026 Bracket & Match Predictor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A private app for 6 friends to compete across two prediction contests during the 2026 FIFA World Cup. $10 buy-in, winner takes all.
 
-Currently, two official plugins are available:
+**Players:** Ujjwal · Sumaly · Utsabi · Sabun · Riti · Avash
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Two contests
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Bracket Predictor
+Pick the entire knockout bracket before first kickoff (June 11, 2026 18:00 UTC). Picks lock at the deadline — then everyone's brackets are revealed and scored live as results come in.
 
-## Expanding the ESLint configuration
+### Match Predictor
+Predict Home / Draw / Away for all 72 group games, and who advances in all 32 knockout matches. Each match locks individually at its own kickoff, so you keep predicting throughout the tournament.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Vite + React + TypeScript** — fully static frontend
+- **Supabase** — shared database so all 6 players see the same live leaderboard
+- **Vercel** — free hosting
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+No login. Each player just taps their name (honor system).
+
+---
+
+## Local setup
+
+```bash
+npm install
+cp .env.example .env   # fill in your Supabase URL and anon key
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Supabase
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a free project at [supabase.com](https://supabase.com), then run the SQL from `Project1.md §7` and `Project2.md §4` in the SQL editor.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Add to `.env`:
 ```
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+---
+
+## Project structure
+
+```
+src/
+  data/         teams.ts · groupFixtures.ts · matches.ts · thirdAllocation.ts
+  lib/          supabase.ts · resolveBracket.ts · score.ts
+  components/   NamePicker · GroupPicker · Bracket · MatchList · Leaderboard · ResultsAdmin
+  types.ts
+  App.tsx
+scripts/
+  genAllocation.ts   (run once with tsx to generate thirdAllocation.ts)
+```
+
+---
+
+## Scoring
+
+**Bracket Predictor**
+
+| Stage | Points each |
+|---|---|
+| Group 1st/2nd correct | 1 |
+| Correct best-8 third | 1 |
+| Reaches R16 | 2 |
+| Reaches QF | 3 |
+| Reaches SF | 5 |
+| Reaches Final | 8 |
+| Champion | 15 |
+
+**Match Predictor**
+
+| Match type | Points |
+|---|---|
+| Group game (1/X/2 correct) | 1 |
+| R32 winner | 2 |
+| R16 winner | 3 |
+| QF winner | 4 |
+| SF / 3rd place | 5 |
+| Final winner | 6 |
