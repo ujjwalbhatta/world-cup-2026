@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NamePicker } from './components/NamePicker';
+import { GroupPicker } from './components/GroupPicker';
 import './App.css';
 
 const LOCK_TIME = new Date('2026-06-11T18:00:00Z');
@@ -18,11 +19,8 @@ export default function App() {
     setPlayer(name);
   }
 
-  function logout() {
-    localStorage.removeItem('wc2026_player');
-    setPlayer(null);
-    setView('home');
-  }
+  // No logout — once you pick your name it's yours for this device.
+  // Prevents accidentally switching to someone else's picks.
 
   if (!player) return <NamePicker onSelect={selectPlayer} />;
 
@@ -31,13 +29,11 @@ export default function App() {
       <header className="app-header">
         <span className="logo">⚽ WC 2026</span>
         <nav>
-          <button onClick={() => setView('home')} className={view === 'home' ? 'active' : ''}>Home</button>
+          <button onClick={() => setView('home')}    className={view === 'home'    ? 'active' : ''}>Home</button>
           <button onClick={() => setView('bracket')} className={view === 'bracket' ? 'active' : ''}>Bracket</button>
-          <button onClick={() => setView('match')} className={view === 'match' ? 'active' : ''}>Match Picks</button>
+          <button onClick={() => setView('match')}   className={view === 'match'   ? 'active' : ''}>Match Picks</button>
         </nav>
-        <span className="player-tag" onClick={logout} title="Click to switch player">
-          👤 {player}
-        </span>
+        <span className="player-tag">👤 {player}</span>
       </header>
 
       <main className="app-main">
@@ -73,10 +69,10 @@ export default function App() {
         )}
 
         {view === 'bracket' && (
-          <div className="coming-soon">
-            <h2>🏆 Bracket Predictor</h2>
-            <p>Coming soon — group picks, best thirds, and the full knockout tree.</p>
-          </div>
+          <GroupPicker
+            player={player}
+            onComplete={() => setView('home')}
+          />
         )}
 
         {view === 'match' && (

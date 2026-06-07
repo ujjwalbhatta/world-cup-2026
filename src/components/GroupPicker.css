@@ -1,0 +1,149 @@
+.gp-loading {
+  text-align: center;
+  padding: 60px;
+  color: #888;
+}
+
+.gp-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gp-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gp-header h2 { margin: 0; flex: 1; }
+
+.gp-back {
+  background: transparent;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.gp-back:hover { border-color: #e8c900; color: #e8c900; }
+
+.gp-count {
+  font-size: 0.9rem;
+  color: #888;
+  background: #1a1a2e;
+  border: 1px solid #333;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.gp-count.done { border-color: #2d6a3f; color: #7ec99a; }
+
+.gp-hint { color: #888; margin: 0; font-size: 0.9rem; }
+
+.gp-locked {
+  background: #2d1a0f;
+  border: 1px solid #6a3d2d;
+  color: #c99a7e;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.gp-next {
+  align-self: flex-end;
+  background: #e8c900;
+  color: #1a1a2e;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.gp-next:hover { opacity: 0.85; }
+
+/* ── Groups grid ────────────────────────────────────────────── */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.group-card {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.15s;
+}
+.group-card.complete { border-color: #2d6a3f; }
+
+.gc-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.gc-check { color: #7ec99a; font-size: 1rem; }
+
+.gc-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gc-label {
+  font-size: 0.8rem;
+  color: #888;
+  width: 46px;
+  flex-shrink: 0;
+}
+
+.gc-row select {
+  flex: 1;
+  background: #0f172a;
+  border: 1px solid #333;
+  color: #ccc;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.gc-row select.filled { border-color: #4a6fa5; color: #fff; }
+.gc-row select:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Best thirds grid ───────────────────────────────────────── */
+.thirds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.third-btn {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  transition: border-color 0.15s, transform 0.1s;
+  position: relative;
+}
+.third-btn:hover:not(.disabled) { border-color: #4a6fa5; transform: translateY(-1px); }
+.third-btn.selected { border-color: #e8c900; background: #1e1e0a; }
+.third-btn.disabled { opacity: 0.4; cursor: not-allowed; }
+
+.third-group { font-size: 0.75rem; color: #888; }
+.third-team  { font-size: 0.95rem; font-weight: 600; color: #fff; }
+.third-check { position: absolute; top: 10px; right: 12px; color: #e8c900; font-weight: 700; }
