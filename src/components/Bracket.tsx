@@ -2,19 +2,19 @@ import { useMemo } from 'react';
 import { usePrediction } from '../lib/usePrediction';
 import { resolveBracket } from '../lib/resolveBracket';
 import { KNOCKOUT_MATCHES } from '../data/matches';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import './Bracket.css';
 
 interface Props {
   player: string;
 }
 
-const ROUND_ORDER: Array<{ round: string; label: string; ids: number[] }> = [
-  { round: 'R32', label: 'Round of 32', ids: [73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88] },
-  { round: 'R16', label: 'Round of 16', ids: [89,90,91,92,93,94,95,96] },
-  { round: 'QF',  label: 'Quarter-finals', ids: [97,98,99,100] },
-  { round: 'SF',  label: 'Semi-finals', ids: [101,102] },
-  { round: 'F',   label: 'Final', ids: [104] },
+
+const ROUND_SECTIONS = [
+  { key: 'R32', label: 'Round of 32',    ids: [73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88] },
+  { key: 'R16', label: 'Round of 16',    ids: [89,90,91,92,93,94,95,96] },
+  { key: 'QF',  label: 'Quarter-finals', ids: [97,98,99,100] },
+  { key: 'SF',  label: 'Semi-finals',    ids: [101,102] },
+  { key: 'F',   label: 'Final',          ids: [104] },
 ];
 
 export function Bracket({ player }: Props) {
@@ -22,14 +22,15 @@ export function Bracket({ player }: Props) {
 
   const bracketReady = useMemo(() => {
     const groups = Object.values(prediction.groups ?? {});
-    const allGroupsDone = groups.length === 12 && groups.every(g => g.first && g.second && g.third);
-    return allGroupsDone && prediction.bestThirds?.length === 8;
+    return groups.length === 12
+      && groups.every(g => g.first && g.second && g.third)
+      && prediction.bestThirds?.length === 8;
   }, [prediction]);
 
-  const resolved = useMemo(() => {
-    if (!bracketReady) return {};
-    return resolveBracket(prediction);
-  }, [prediction, bracketReady]);
+  const resolved = useMemo(
+    () => (bracketReady ? resolveBracket(prediction) : {}),
+    [prediction, bracketReady],
+  );
 
   if (loading) return <div className="br-loading">Loading bracket…</div>;
 
@@ -44,71 +45,56 @@ export function Bracket({ player }: Props) {
   function pickWinner(matchId: number, team: string) {
     if (locked || !team) return;
     setWinner(matchId, team);
-    // Prune downstream picks that depended on a different winner from this match
-    pruneDownstream(matchId, team);
+    pruneDownstream(matchId);
   }
 
-  function pruneDownstream(matchId: number, winner: string) {
-    const downstream = getDownstream(matchId);
-    for (const mid of downstream) {
-      const pick = prediction.winners[mid];
-      if (pick && !canReach(pick, mid)) {
-        setWinner(mid, '');
-      }
-    }
-    void winner;
-  }
-
-  function getDownstream(matchId: number): number[] {
-    const result: number[] = [];
+  function pruneDownstream(matchId: number) {
     const queue = [matchId];
     while (queue.length) {
       const cur = queue.shift()!;
       const next = KNOCKOUT_MATCHES.filter(
-        (m) => m.home === `W${cur}` || m.away === `W${cur}`
+        m => m.home === `W${cur}` || m.away === `W${cur}`,
       );
       for (const m of next) {
-        result.push(m.id);
+        const pick = prediction.winners[m.id];
+        const { home, away } = resolved[m.id] ?? {};
+        if (pick && pick !== home && pick !== away) {
+          setWinner(m.id, '');
+        }
         queue.push(m.id);
       }
     }
-    return result;
   }
 
-  function canReach(team: string, matchId: number): boolean {
-    const { home, away } = resolved[matchId] ?? {};
-    return team === home || team === away;
+  function card(id: number) {
+    const { home = '', away = '' } = resolved[id] ?? {};
+    const picked = prediction.winners[id] ?? '';
+    return (
+      <MatchCard
+        key={id}
+        matchId={id}
+        home={home}
+        away={away}
+        picked={picked}
+        locked={locked}
+        onPick={team => pickWinner(id, team)}
+      />
+    );
   }
 
   return (
     <div className="bracket-wrap">
       {locked && <div className="br-locked">🔒 Bracket is locked.</div>}
-      <div className="bracket-scroll">
-        {ROUND_ORDER.map(({ round, label, ids }) => (
-          <div key={round} className="br-round">
-            <div className="br-round-label">{label}</div>
-            <div className="br-matches">
-              {ids.map((id) => {
-                const teams = resolved[id] ?? { home: '', away: '' };
-                const picked = prediction.winners[id] ?? '';
-                return (
-                  <MatchCard
-                    key={id}
-                    matchId={id}
-                    home={teams.home}
-                    away={teams.away}
-                    picked={picked}
-                    locked={locked}
-                    onPick={(team) => pickWinner(id, team)}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Champion display */}
+      {ROUND_SECTIONS.map(({ key, label, ids }) => (
+        <section key={key} className="br-section">
+          <h3 className="br-section-title">{label}</h3>
+          <div className={`br-grid br-grid-${key}`}>
+            {ids.map(id => card(id))}
+          </div>
+        </section>
+      ))}
+
       {prediction.winners[104] && (
         <div className="br-champion">
           🏆 Your champion: <strong>{prediction.winners[104]}</strong>
@@ -130,19 +116,24 @@ interface MatchCardProps {
 }
 
 function MatchCard({ matchId, home, away, picked, locked, onPick }: MatchCardProps) {
-  const unknown = !home && !away;
+  const bothKnown = home && away;
 
   return (
-    <div className={`match-card ${unknown ? 'unknown' : ''}`}>
-      <div className="mc-id">M{matchId}</div>
-      {unknown ? (
-        <div className="mc-placeholder">TBD</div>
-      ) : (
-        <>
+    <div className={`match-card ${!bothKnown ? 'unknown' : ''} ${picked ? 'has-pick' : ''}`}>
+      <div className="mc-header">
+        <span className="mc-id">Match {matchId}</span>
+        {picked && <span className="mc-picked-label">→ {picked}</span>}
+      </div>
+      {bothKnown ? (
+        <div className="mc-teams">
           <TeamBtn team={home} picked={picked} locked={locked} onPick={onPick} />
-          <div className="mc-vs">vs</div>
+          <span className="mc-vs">vs</span>
           <TeamBtn team={away} picked={picked} locked={locked} onPick={onPick} />
-        </>
+        </div>
+      ) : (
+        <div className="mc-tbd">
+          Waiting on earlier picks
+        </div>
       )}
     </div>
   );
@@ -156,17 +147,15 @@ interface TeamBtnProps {
 }
 
 function TeamBtn({ team, picked, locked, onPick }: TeamBtnProps) {
-  if (!team) return <div className="team-btn empty">—</div>;
   const isWinner = picked === team;
   return (
     <button
       className={`team-btn ${isWinner ? 'winner' : ''}`}
       onClick={() => !locked && onPick(team)}
       disabled={locked}
-      title={locked ? 'Picks are locked' : `Pick ${team}`}
     >
-      {team}
       {isWinner && <span className="team-check">✓</span>}
+      {team}
     </button>
   );
 }

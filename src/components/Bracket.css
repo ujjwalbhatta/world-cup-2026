@@ -12,93 +12,126 @@
   padding: 10px 14px;
   border-radius: 8px;
   font-size: 0.9rem;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
 .bracket-wrap {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 28px;
 }
 
-.bracket-scroll {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  padding-bottom: 12px;
-}
-
-/* ── Round column ───────────────────────────────────────────── */
-.br-round {
+/* ── Round sections ─────────────────────────────────────────── */
+.br-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 180px;
+  gap: 12px;
 }
 
-.br-round-label {
+.br-section-title {
+  margin: 0;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: #e8c900;
-  padding: 4px 0;
-  white-space: nowrap;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #2a2a4a;
 }
 
-.br-matches {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* ── Grids per round ────────────────────────────────────────── */
+.br-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.br-grid-R32 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.br-grid-R16 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+.br-grid-QF  { grid-template-columns: repeat(2, 1fr); }
+.br-grid-SF  { grid-template-columns: repeat(2, 1fr); }
+.br-grid-F   { grid-template-columns: 1fr; max-width: 360px; }
+
+@media (max-width: 600px) {
+  .br-grid-QF,
+  .br-grid-SF { grid-template-columns: 1fr; }
 }
 
 /* ── Match card ─────────────────────────────────────────────── */
 .match-card {
   background: #16213e;
   border: 1px solid #2a2a4a;
-  border-radius: 8px;
-  padding: 8px 10px;
+  border-radius: 10px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
+  transition: border-color 0.15s;
 }
 
-.match-card.unknown { opacity: 0.4; }
+.match-card.has-pick  { border-color: #2d4a2d; }
+.match-card.unknown   { opacity: 0.45; }
+
+.mc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 
 .mc-id {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   color: #555;
-  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.mc-picked-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7ec99a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+  text-align: right;
+}
+
+.mc-teams {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .mc-vs {
   font-size: 0.7rem;
-  color: #555;
-  text-align: center;
+  color: #444;
+  flex-shrink: 0;
 }
 
-.mc-placeholder {
-  font-size: 0.85rem;
-  color: #555;
-  text-align: center;
+.mc-tbd {
+  font-size: 0.8rem;
+  color: #444;
+  font-style: italic;
   padding: 4px 0;
 }
 
 /* ── Team button ────────────────────────────────────────────── */
 .team-btn {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   background: #0f172a;
   border: 1px solid #2a2a4a;
-  color: #ccc;
-  padding: 6px 8px;
-  border-radius: 6px;
-  font-size: 0.8rem;
+  color: #bbb;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 500;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 6px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -114,29 +147,23 @@
   border-color: #e8c900;
   background: #1e1e0a;
   color: #e8c900;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.team-btn.empty {
-  color: #444;
-  cursor: default;
-}
-
-.team-btn:disabled { cursor: not-allowed; }
+.team-btn:disabled { cursor: not-allowed; opacity: 0.7; }
 
 .team-check {
   font-size: 0.75rem;
-  color: #e8c900;
   flex-shrink: 0;
 }
 
-/* ── Champion ───────────────────────────────────────────────── */
+/* ── Champion banner ────────────────────────────────────────── */
 .br-champion {
   background: #1e1e0a;
   border: 2px solid #e8c900;
   color: #e8c900;
-  padding: 14px 20px;
-  border-radius: 10px;
-  font-size: 1.1rem;
+  padding: 16px 24px;
+  border-radius: 12px;
+  font-size: 1.15rem;
   text-align: center;
 }
