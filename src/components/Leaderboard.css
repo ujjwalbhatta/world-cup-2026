@@ -4,34 +4,53 @@
   color: #888;
 }
 
+.lb-updated {
+  font-size: 0.75rem;
+  color: #555;
+  margin: 0 0 4px;
+}
+
 .lb-wrap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px;
 }
 
-.lb-header {
+/* ── Contest block ──────────────────────────────────────────── */
+.lb-contest {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lb-contest-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.lb-title { margin: 0; font-size: 1.4rem; }
+.lb-contest-title {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.lb-contest-sub {
+  margin: 2px 0 0;
+  color: #888;
+  font-size: 0.82rem;
+}
 
 .lb-pot {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #e8c900;
   background: #1e1e0a;
   border: 1px solid #e8c900;
   padding: 4px 14px;
   border-radius: 20px;
-}
-
-.lb-updated {
-  margin: -10px 0 0;
-  font-size: 0.75rem;
-  color: #555;
+  white-space: nowrap;
 }
 
 /* ── Table ──────────────────────────────────────────────────── */
@@ -44,11 +63,17 @@
 .lb-thead,
 .lb-row {
   display: grid;
-  grid-template-columns: 36px 1fr 72px 72px 72px;
+  grid-template-columns: 36px 1fr 80px 80px;
   align-items: center;
   padding: 8px 12px;
   border-radius: 8px;
   gap: 4px;
+}
+
+/* When there's no sub-column (bracket table) */
+.lb-contest:first-child .lb-thead,
+.lb-contest:first-child .lb-row {
+  grid-template-columns: 36px 1fr 80px;
 }
 
 .lb-thead {
@@ -73,52 +98,41 @@
 
 .lb-col-rank   { font-size: 1rem; text-align: center; }
 .lb-col-player { font-weight: 600; }
-.lb-col-score  { text-align: right; color: #888; font-size: 0.85rem; }
+.lb-col-sub    { text-align: right; color: #666; font-size: 0.78rem; }
 .lb-col-total  { text-align: right; font-weight: 700; color: #e8c900; font-size: 1rem; }
 
 .lb-row.leader .lb-col-total { font-size: 1.1rem; }
-
 .lb-pending { font-size: 0.72rem; color: #555; font-weight: 400; }
 
-/* ── Scoring guide ──────────────────────────────────────────── */
+/* ── Scoring guide (collapsible) ────────────────────────────── */
 .lb-scoring {
   background: #16213e;
   border: 1px solid #2a2a4a;
-  border-radius: 10px;
-  padding: 16px 18px;
-}
-
-.lb-scoring-title {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #888;
-  margin-bottom: 12px;
-}
-
-.lb-scoring-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  border-radius: 8px;
+  padding: 10px 14px;
   font-size: 0.82rem;
 }
 
-@media (max-width: 500px) {
-  .lb-scoring-cols { grid-template-columns: 1fr; }
-  .lb-thead,
-  .lb-row { grid-template-columns: 30px 1fr 55px 55px 55px; }
+.lb-scoring summary {
+  cursor: pointer;
+  color: #888;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  user-select: none;
 }
 
-.lb-scoring-cols strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #ccc;
-}
-
-.lb-scoring-cols ul {
-  margin: 0;
+.lb-scoring ul {
+  margin: 10px 0 0;
   padding-left: 16px;
   color: #888;
-  line-height: 1.8;
+  line-height: 1.9;
+}
+
+@media (max-width: 500px) {
+  .lb-thead,
+  .lb-row { grid-template-columns: 30px 1fr 60px 60px; padding: 8px 10px; }
+  .lb-contest:first-child .lb-thead,
+  .lb-contest:first-child .lb-row { grid-template-columns: 30px 1fr 60px; }
 }
