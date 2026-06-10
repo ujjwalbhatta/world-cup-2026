@@ -58,7 +58,7 @@ export function MatchList({ player }: Props) {
         {groupedByDate.map(([date, fixtures]) => (
           <div key={date} className="ml-day">
             <div className="ml-day-label">
-              {new Date(date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
+              {new Date(date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })}
             </div>
             <div className="ml-matches">
               {fixtures.map(f => {

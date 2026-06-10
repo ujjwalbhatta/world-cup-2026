@@ -14,7 +14,13 @@
       "WebFetch(domain:en.wikipedia.org)",
       "WebFetch(domain:www.fifa.com)",
       "WebFetch(domain:www.soccerway.com)",
-      "Bash(node *)"
+      "Bash(node *)",
+      "Bash(npx tsx *)",
+      "Bash(git -C /Users/ujjwalbhatta/Desktop/worldcup-bracket-prediction remote -v)",
+      "Bash(git *)",
+      "Bash(vercel ls *)",
+      "Bash(vercel env *)",
+      "Bash(vercel *)"
     ]
   }
 }
