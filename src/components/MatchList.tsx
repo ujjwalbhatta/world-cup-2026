@@ -1,9 +1,11 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GROUP_FIXTURES } from '../data/groupFixtures';
 import { KNOCKOUT_MATCHES } from '../data/matches';
 import { useMatchPicks } from '../lib/useMatchPicks';
 import type { Outcome } from '../types';
 import './MatchList.css';
+
+const LOCK_GRACE_MS = 60 * 60 * 1000; // picks stay open 1 hour after kickoff
 
 interface Props {
   player: string;
@@ -12,7 +14,12 @@ interface Props {
 
 export function MatchList({ player }: Props) {
   const { picks, results, loading, setPick } = useMatchPicks(player);
-  const now = Date.now();
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   // Group fixtures by date
   const groupedByDate = useMemo(() => {
@@ -37,7 +44,7 @@ export function MatchList({ player }: Props) {
 
   function isOpen(kickoff: string, home?: string, away?: string): boolean {
     if (!home || !away) return false;
-    return now < new Date(kickoff).getTime();
+    return now < new Date(kickoff).getTime() + LOCK_GRACE_MS;
   }
 
   function resultIcon(matchId: number): React.ReactNode {
@@ -181,7 +188,7 @@ function MatchRow({ home, away, kickoff, pick, result, open, kicked, isKnockout,
               `.trim()}
               onClick={() => open && onPick(o)}
               disabled={!open}
-              title={!open ? (kicked ? 'Match started' : 'Teams not set yet') : `Pick ${label}`}
+              title={!open ? (kicked ? 'Picks closed (>1 hr after kickoff)' : 'Teams not set yet') : (kicked ? 'Match in progress — pick now!' : `Pick ${label}`)}
             >
               {label}
             </button>

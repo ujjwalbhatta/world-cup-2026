@@ -38,7 +38,7 @@ export const GROUP_FIXTURES: GroupFixture[] = [
 
   // ── Group D ──────────────────────────────────────────────────
   { id: 19, group: 'D', home: 'USA',       away: 'Paraguay',  kickoff: '2026-06-12T21:00:00Z' },
-  { id: 20, group: 'D', home: 'Australia', away: 'Türkiye',   kickoff: '2026-06-13T18:00:00Z' },
+  { id: 20, group: 'D', home: 'Australia', away: 'Türkiye',   kickoff: '2026-06-14T03:00:00Z' },
   { id: 21, group: 'D', home: 'USA',       away: 'Türkiye',   kickoff: '2026-06-20T18:00:00Z' },
   { id: 22, group: 'D', home: 'Paraguay',  away: 'Australia', kickoff: '2026-06-20T21:00:00Z' },
   { id: 23, group: 'D', home: 'Paraguay',  away: 'Türkiye',   kickoff: '2026-06-25T21:00:00Z' },
