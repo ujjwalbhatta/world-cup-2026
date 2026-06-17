@@ -21,11 +21,14 @@ export function MatchList({ player }: Props) {
     return () => clearInterval(id);
   }, []);
 
-  // Group fixtures by date
+  // Group fixtures by "sports day" — matches kicking off 00:00–05:59 UTC
+  // belong to the previous calendar day (late-night North American slots)
   const groupedByDate = useMemo(() => {
     const map: Record<string, typeof GROUP_FIXTURES> = {};
     for (const f of GROUP_FIXTURES) {
-      const date = f.kickoff.slice(0, 10);
+      const d = new Date(f.kickoff);
+      if (d.getUTCHours() < 6) d.setUTCDate(d.getUTCDate() - 1);
+      const date = d.toISOString().slice(0, 10);
       if (!map[date]) map[date] = [];
       map[date].push(f);
     }
@@ -65,7 +68,7 @@ export function MatchList({ player }: Props) {
         {groupedByDate.map(([date, fixtures]) => (
           <div key={date} className="ml-day">
             <div className="ml-day-label">
-              {new Date(date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })}
+              {new Date(date + 'T12:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })}
             </div>
             <div className="ml-matches">
               {fixtures.map(f => {
@@ -168,6 +171,8 @@ function MatchRow({ home, away, kickoff, pick, result, open, kicked, isKnockout,
       <div className="mr-meta">
         <span className="mr-kickoff">
           {kickoffDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} UTC
+          {' · '}
+          {kickoffDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} local
         </span>
         {icon}
       </div>
