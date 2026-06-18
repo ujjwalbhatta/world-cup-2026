@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { supabase } from './supabase';
 import type { Prediction, GroupId } from '../types';
 
+const LOCK_TIME = new Date('2026-06-11T18:00:00Z');
+
 function localKey(player: string) {
   return `wc2026_draft_${player}`;
 }
@@ -46,7 +48,9 @@ export function usePrediction(player: string) {
           };
           setPrediction(pred);
           localStorage.setItem(localKey(player), JSON.stringify(pred));
-          setLocked(!!data.locked_at);
+          setLocked(!!data.locked_at || Date.now() >= LOCK_TIME.getTime());
+        } else {
+          setLocked(Date.now() >= LOCK_TIME.getTime());
         }
         setLoading(false);
       });
@@ -55,6 +59,7 @@ export function usePrediction(player: string) {
 
   // Debounced save: localStorage immediately, Supabase after 800ms idle
   function update(next: Prediction) {
+    if (locked || Date.now() >= LOCK_TIME.getTime()) return;
     setPrediction(next);
     localStorage.setItem(localKey(player), JSON.stringify(next));
 
