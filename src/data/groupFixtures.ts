@@ -88,8 +88,8 @@ export const GROUP_FIXTURES: GroupFixture[] = [
   { id: 56, group: 'J', home: 'Austria',   away: 'Jordan',  kickoff: '2026-06-17T04:00:00Z' }, // midnight ET Jun 16/17
   { id: 57, group: 'J', home: 'Argentina', away: 'Austria', kickoff: '2026-06-22T17:00:00Z' }, // 1 PM ET
   { id: 58, group: 'J', home: 'Jordan',    away: 'Algeria', kickoff: '2026-06-23T03:00:00Z' }, // 11 PM ET Jun 22
-  { id: 59, group: 'J', home: 'Algeria',   away: 'Austria', kickoff: '2026-06-27T02:00:00Z' }, // 10 PM ET Jun 26
-  { id: 60, group: 'J', home: 'Jordan',    away: 'Argentina', kickoff: '2026-06-27T02:00:00Z' }, // 10 PM ET Jun 26
+  { id: 59, group: 'J', home: 'Algeria',   away: 'Austria', kickoff: '2026-06-28T02:00:00Z' }, // 10 PM ET Jun 27
+  { id: 60, group: 'J', home: 'Jordan',    away: 'Argentina', kickoff: '2026-06-28T02:00:00Z' }, // 10 PM ET Jun 27
 
   // ── Group K ──────────────────────────────────────────────────
   { id: 61, group: 'K', home: 'Portugal',   away: 'DR Congo',   kickoff: '2026-06-17T17:00:00Z' }, // 1 PM ET

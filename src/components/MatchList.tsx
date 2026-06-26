@@ -21,16 +21,20 @@ export function MatchList({ player }: Props) {
     return () => clearInterval(id);
   }, []);
 
-  // Group fixtures by "sports day" — matches kicking off 00:00–05:59 UTC
-  // belong to the previous calendar day (late-night North American slots)
+  // Group fixtures by local calendar date (browser timezone)
   const groupedByDate = useMemo(() => {
     const map: Record<string, typeof GROUP_FIXTURES> = {};
     for (const f of GROUP_FIXTURES) {
       const d = new Date(f.kickoff);
-      if (d.getUTCHours() < 6) d.setUTCDate(d.getUTCDate() - 1);
-      const date = d.toISOString().slice(0, 10);
+      const y = d.getFullYear();
+      const mo = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const date = `${y}-${mo}-${day}`;
       if (!map[date]) map[date] = [];
       map[date].push(f);
+    }
+    for (const fixtures of Object.values(map)) {
+      fixtures.sort((a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime());
     }
     return Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
   }, []);
@@ -68,7 +72,7 @@ export function MatchList({ player }: Props) {
         {groupedByDate.map(([date, fixtures]) => (
           <div key={date} className="ml-day">
             <div className="ml-day-label">
-              {new Date(date + 'T12:00:00Z').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' })}
+              {new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
             </div>
             <div className="ml-matches">
               {fixtures.map(f => {

@@ -1,0 +1,114 @@
+.gs-loading {
+  text-align: center;
+  padding: 60px;
+  color: #888;
+}
+
+.gs-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 0 2rem;
+}
+
+.gs-title {
+  margin: 0 0 1.2rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #e8c900;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #2a2a4a;
+}
+
+.gs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+}
+
+/* ── Group card ─────────────────────────────────────────────── */
+.gs-group {
+  background: #16213e;
+  border: 1px solid #2a2a4a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.gs-group-header {
+  background: #0f172a;
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+}
+
+/* ── Table ──────────────────────────────────────────────────── */
+.gs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.gs-table thead th {
+  background: #0f172a;
+  padding: 4px 8px;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #555;
+  letter-spacing: 0.04em;
+}
+
+.gs-table thead th.gs-th-team {
+  text-align: left;
+}
+
+.gs-table thead th.gs-th-pts {
+  color: #888;
+}
+
+.gs-table tbody td {
+  padding: 7px 8px;
+  text-align: center;
+  color: #aaa;
+  border-bottom: 1px solid #1a2235;
+}
+
+.gs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.gs-table tbody td.gs-pos {
+  color: #444;
+  font-size: 0.72rem;
+  width: 20px;
+}
+
+.gs-table tbody td.gs-team {
+  text-align: left;
+  font-weight: 500;
+  color: #ccc;
+}
+
+.gs-table tbody td.gs-pts {
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+/* top 2 rows get a subtle green tint */
+.gs-table tbody tr.gs-top2 td.gs-team {
+  color: #86efac;
+}
+
+.gs-table tbody tr.gs-top2 td.gs-pts {
+  color: #86efac;
+}
+
+@media (max-width: 600px) {
+  .gs-grid {
+    grid-template-columns: 1fr;
+  }
+}
