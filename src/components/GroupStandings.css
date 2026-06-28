@@ -23,7 +23,7 @@
 
 .gs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 14px;
 }
 
@@ -105,6 +105,10 @@
 .gs-table tbody tr.gs-top2 td.gs-pts {
   color: #86efac;
 }
+
+/* goal difference colours */
+.gs-table tbody td.gs-gd-pos { color: #86efac; font-weight: 600; }
+.gs-table tbody td.gs-gd-neg { color: #f87171; }
 
 /* qualifying 3rd-place — amber */
 .gs-table tbody tr.gs-qual-third {
