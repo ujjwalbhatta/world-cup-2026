@@ -3,6 +3,18 @@ import { supabase } from '../lib/supabase';
 import type { Results } from '../types';
 import './GroupStandings.css';
 
+// ESPN uses different spellings — map to our canonical names
+const ESPN_NAME: Record<string, string> = {
+  'United States':      'USA',
+  'Ivory Coast':        "Côte d'Ivoire",
+  'Cape Verde':         'Cabo Verde',
+  'Bosnia-Herzegovina': 'Bosnia & Herzegovina',
+  'Congo DR':           'DR Congo',
+};
+function canonical(name: string): string {
+  return ESPN_NAME[name] ?? name;
+}
+
 interface TeamRow {
   position: number;
   team: string;
@@ -42,7 +54,7 @@ export function GroupStandings() {
           name: g.name as string,
           rows: (g.rows ?? []).map((r: any) => ({
             position: r.position,
-            team: r.team?.name ?? '',
+            team: canonical(r.team?.name ?? ''),
             p: r.matches ?? 0,
             w: r.wins ?? 0,
             d: r.draws ?? 0,
