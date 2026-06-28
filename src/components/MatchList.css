@@ -84,12 +84,12 @@
 }
 
 .ml-day-label {
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-weight: 700;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 2px 0;
+  color: #fff;
+  padding: 8px 0 4px;
+  border-bottom: 1px solid #2a2a4a;
+  margin-bottom: 4px;
 }
 
 .ml-matches {
