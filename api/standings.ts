@@ -5,8 +5,12 @@ const URL = 'https://www.sofascore.com/api/v1/unique-tournament/16/season/58210/
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
   const r = await fetch(URL, {
     headers: {
-      'User-Agent': 'Mozilla/5.0',
-      'Accept': 'application/json',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+      'Accept': 'application/json, text/plain, */*',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Referer': 'https://www.sofascore.com/',
+      'Origin': 'https://www.sofascore.com',
+      'Cache-Control': 'no-cache',
     },
   });
 
