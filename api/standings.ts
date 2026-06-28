@@ -1,25 +1,43 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-const URL = 'https://www.sofascore.com/api/v1/unique-tournament/16/season/58210/standings/total';
+const ESPN_URL = 'https://site.api.espn.com/apis/v2/sports/soccer/fifa.world/standings';
 
 export default async function handler(_req: VercelRequest, res: VercelResponse) {
-  const r = await fetch(URL, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-      'Accept': 'application/json, text/plain, */*',
-      'Accept-Language': 'en-US,en;q=0.9',
-      'Referer': 'https://www.sofascore.com/',
-      'Origin': 'https://www.sofascore.com',
-      'Cache-Control': 'no-cache',
-    },
-  });
+  const r = await fetch(ESPN_URL);
 
   if (!r.ok) {
-    res.status(r.status).json({ error: 'upstream error' });
+    res.status(r.status).json({ error: 'upstream error', status: r.status });
     return;
   }
 
   const data = await r.json();
+
+  // ESPN wraps groups inside `children[].standings.entries`
+  // Normalise to the shape GroupStandings.tsx expects:
+  // { standings: [{ name, rows: [{ position, team, matches, wins, draws, losses, scoresFor, scoresAgainst, scoreDiffFormatted, points }] }] }
+  const groups = (data.children ?? []).map((child: any) => {
+    const name: string = child.name ?? child.abbreviation ?? '';
+    const entries: any[] = child.standings?.entries ?? [];
+    const rows = entries.map((e: any) => {
+      const stats: Record<string, number> = {};
+      for (const s of e.stats ?? []) stats[s.name] = Number(s.value);
+      const gd = (stats['pointDifferential'] ?? stats['goalDifference'] ?? 0);
+      return {
+        position: stats['rank'] ?? 0,
+        team: e.team?.displayName ?? e.team?.name ?? '',
+        matches: stats['gamesPlayed'] ?? 0,
+        wins: stats['wins'] ?? 0,
+        draws: stats['ties'] ?? 0,
+        losses: stats['losses'] ?? 0,
+        scoresFor: stats['pointsFor'] ?? 0,
+        scoresAgainst: stats['pointsAgainst'] ?? 0,
+        scoreDiffFormatted: gd >= 0 ? `+${gd}` : `${gd}`,
+        points: stats['points'] ?? 0,
+      };
+    }).sort((a: any, b: any) => a.position - b.position);
+    return { name, rows };
+  });
+
   res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
-  res.status(200).json(data);
+  res.status(200).json({ standings: groups });
 }
