@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { GROUP_FIXTURES } from '../data/groupFixtures';
 import { KNOCKOUT_MATCHES } from '../data/matches';
 import { useMatchPicks } from '../lib/useMatchPicks';
@@ -75,6 +75,21 @@ export function MatchList({ player }: Props) {
     });
   }, [resolvedKO]);
 
+  const dayRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  function scrollToDay(date: string) {
+    dayRefs.current[date]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Find the current or next upcoming match day
+  const activeDay = useMemo(() => {
+    for (const [date] of groupedByDate) {
+      const d = new Date(date + 'T23:59:59');
+      if (d.getTime() >= now) return date;
+    }
+    return groupedByDate[groupedByDate.length - 1]?.[0] ?? '';
+  }, [groupedByDate, now]);
+
   if (loading) return <div className="ml-loading">Loading matches…</div>;
 
   function isOpen(kickoff: string, home?: string, away?: string): boolean {
@@ -93,12 +108,28 @@ export function MatchList({ player }: Props) {
 
   return (
     <div className="ml-wrap">
+      {/* ── Day strip ── */}
+      <div className="ml-day-strip">
+        {groupedByDate.map(([date]) => {
+          const label = new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+          return (
+            <button
+              key={date}
+              className={`ml-day-tab ${date === activeDay ? 'active' : ''}`}
+              onClick={() => scrollToDay(date)}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
       {/* ── Group Stage ── */}
       <section className="ml-section">
         <h3 className="ml-section-title">Group Stage — Jun 11–29</h3>
 
         {groupedByDate.map(([date, fixtures]) => (
-          <div key={date} className="ml-day">
+          <div key={date} className="ml-day" ref={el => { dayRefs.current[date] = el; }}>
             <div className="ml-day-label">
               {new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
             </div>
