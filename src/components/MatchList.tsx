@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { GROUP_FIXTURES } from '../data/groupFixtures';
 import { KNOCKOUT_MATCHES } from '../data/matches';
 import { useMatchPicks } from '../lib/useMatchPicks';
-import type { Outcome } from '../types';
+import { supabase } from '../lib/supabase';
+import { resolveActualBracket } from '../lib/resolveActual';
+import type { Outcome, Results } from '../types';
 import './MatchList.css';
 
 const LOCK_BEFORE_MS = 60 * 60 * 1000; // picks lock 1 hour before kickoff
@@ -15,11 +17,37 @@ interface Props {
 export function MatchList({ player }: Props) {
   const { picks, results, loading, setPick } = useMatchPicks(player);
   const [now, setNow] = useState(Date.now());
+  const [actual, setActual] = useState<Results>({});
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 30_000);
     return () => clearInterval(id);
   }, []);
+
+  // Fetch group standings + knockout winners so we can resolve bracket teams for users
+  useEffect(() => {
+    async function load() {
+      const { data } = await supabase.from('results').select('data').eq('id', 1).single();
+      if (data) setActual(data.data as Results);
+    }
+    load();
+    const ch = supabase
+      .channel('ml_actual')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'results' }, () => load())
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, []);
+
+  // Resolve bracket: extract winners from match_results then run resolveActualBracket
+  const resolvedKO = useMemo(() => {
+    const winners: Record<number, string> = {};
+    for (const [idStr, r] of Object.entries(results)) {
+      if (r.result && r.home && r.away) {
+        winners[Number(idStr)] = r.result === 'home' ? r.home : r.away;
+      }
+    }
+    return resolveActualBracket(actual, winners);
+  }, [actual, results]);
 
   // Group fixtures by local calendar date (browser timezone)
   const groupedByDate = useMemo(() => {
@@ -39,13 +67,13 @@ export function MatchList({ player }: Props) {
     return Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
   }, []);
 
-  // Knockout matches that have both teams set in results
+  // Knockout matches whose teams are resolved from the actual bracket
   const knockoutReady = useMemo(() => {
     return KNOCKOUT_MATCHES.filter(m => {
-      const r = results[m.id];
+      const r = resolvedKO[m.id];
       return r?.home && r?.away;
     });
-  }, [results]);
+  }, [resolvedKO]);
 
   if (loading) return <div className="ml-loading">Loading matches…</div>;
 
@@ -112,19 +140,19 @@ export function MatchList({ player }: Props) {
         ) : (
           <div className="ml-matches">
             {knockoutReady.map(m => {
-              const r      = results[m.id]!;
-              const open   = isOpen(m.kickoff, r.home, r.away);
+              const { home, away } = resolvedKO[m.id]!;
+              const open   = isOpen(m.kickoff, home, away);
               const kicked = now >= new Date(m.kickoff).getTime();
               const pick   = picks[m.id];
               return (
                 <MatchRow
                   key={m.id}
                   matchId={m.id}
-                  home={r.home!}
-                  away={r.away!}
+                  home={home}
+                  away={away}
                   kickoff={m.kickoff}
                   pick={pick}
-                  result={r.result}
+                  result={results[m.id]?.result}
                   open={open}
                   kicked={kicked}
                   isKnockout={true}
