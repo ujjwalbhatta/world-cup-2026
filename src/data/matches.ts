@@ -10,22 +10,22 @@ export interface KnockoutMatch {
 
 export const KNOCKOUT_MATCHES: KnockoutMatch[] = [
   // ── Round of 32 (73–88) ─────────────────────────────────────
-  { id: 73, round: 'R32', home: '2A',           away: '2B',           kickoff: '2026-06-28T18:00:00Z' },
-  { id: 74, round: 'R32', home: '1E',           away: '3rd[A/B/C/D/F]', kickoff: '2026-06-28T21:00:00Z' },
-  { id: 75, round: 'R32', home: '1F',           away: '2C',           kickoff: '2026-06-29T18:00:00Z' },
-  { id: 76, round: 'R32', home: '1C',           away: '2F',           kickoff: '2026-06-29T21:00:00Z' },
-  { id: 77, round: 'R32', home: '1I',           away: '3rd[C/D/F/G/H]', kickoff: '2026-06-30T18:00:00Z' },
-  { id: 78, round: 'R32', home: '2E',           away: '2I',           kickoff: '2026-06-30T21:00:00Z' },
-  { id: 79, round: 'R32', home: '1A',           away: '3rd[C/E/F/H/I]', kickoff: '2026-07-01T18:00:00Z' },
-  { id: 80, round: 'R32', home: '1L',           away: '3rd[E/H/I/J/K]', kickoff: '2026-07-01T21:00:00Z' },
-  { id: 81, round: 'R32', home: '1D',           away: '3rd[B/E/F/I/J]', kickoff: '2026-07-02T18:00:00Z' },
-  { id: 82, round: 'R32', home: '1G',           away: '3rd[A/E/H/I/J]', kickoff: '2026-07-02T21:00:00Z' },
-  { id: 83, round: 'R32', home: '2K',           away: '2L',           kickoff: '2026-07-03T18:00:00Z' },
-  { id: 84, round: 'R32', home: '1H',           away: '2J',           kickoff: '2026-07-03T21:00:00Z' },
-  { id: 85, round: 'R32', home: '1B',           away: '3rd[E/F/G/I/J]', kickoff: '2026-07-04T18:00:00Z' },
-  { id: 86, round: 'R32', home: '1J',           away: '2H',           kickoff: '2026-07-04T21:00:00Z' },
-  { id: 87, round: 'R32', home: '1K',           away: '3rd[D/E/I/J/L]', kickoff: '2026-07-05T18:00:00Z' },
-  { id: 88, round: 'R32', home: '2D',           away: '2G',           kickoff: '2026-07-05T21:00:00Z' },
+  { id: 73, round: 'R32', home: '2A',              away: '2B',              kickoff: '2026-06-28T19:00:00Z' }, // 2 PM CDT Jun 28
+  { id: 74, round: 'R32', home: '1E',              away: '3rd[A/B/C/D/F]', kickoff: '2026-06-29T20:30:00Z' }, // 3:30 PM CDT Jun 29
+  { id: 75, round: 'R32', home: '1F',              away: '2C',              kickoff: '2026-06-29T21:00:00Z' }, // 4 PM CDT Jun 29
+  { id: 76, round: 'R32', home: '1C',              away: '2F',              kickoff: '2026-06-29T17:00:00Z' }, // noon CDT Jun 29
+  { id: 77, round: 'R32', home: '1I',              away: '3rd[C/D/F/G/H]', kickoff: '2026-06-30T21:00:00Z' }, // 4 PM CDT Jun 30
+  { id: 78, round: 'R32', home: '2E',              away: '2I',              kickoff: '2026-06-30T17:00:00Z' }, // noon CDT Jun 30
+  { id: 79, round: 'R32', home: '1A',              away: '3rd[C/E/F/H/I]', kickoff: '2026-06-30T21:00:00Z' }, // 4 PM CDT Jun 30
+  { id: 80, round: 'R32', home: '1L',              away: '3rd[E/H/I/J/K]', kickoff: '2026-07-01T16:00:00Z' }, // 11 AM CDT Jul 1
+  { id: 81, round: 'R32', home: '1D',              away: '3rd[B/E/F/I/J]', kickoff: '2026-07-01T20:00:00Z' }, // 3 PM CDT Jul 1
+  { id: 82, round: 'R32', home: '1G',              away: '3rd[A/E/H/I/J]', kickoff: '2026-07-01T20:00:00Z' }, // 3 PM CDT Jul 1
+  { id: 83, round: 'R32', home: '2K',              away: '2L',              kickoff: '2026-07-02T23:00:00Z' }, // 6 PM CDT Jul 2
+  { id: 84, round: 'R32', home: '1H',              away: '2J',              kickoff: '2026-07-02T19:00:00Z' }, // 2 PM CDT Jul 2
+  { id: 85, round: 'R32', home: '1B',              away: '3rd[E/F/G/I/J]', kickoff: '2026-07-02T22:00:00Z' }, // 5 PM CDT Jul 2
+  { id: 86, round: 'R32', home: '1J',              away: '2H',              kickoff: '2026-07-03T22:00:00Z' }, // 5 PM CDT Jul 3
+  { id: 87, round: 'R32', home: '1K',              away: '3rd[D/E/I/J/L]', kickoff: '2026-07-03T22:30:00Z' }, // 5:30 PM CDT Jul 3
+  { id: 88, round: 'R32', home: '2D',              away: '2G',              kickoff: '2026-07-03T18:00:00Z' }, // 1 PM CDT Jul 3
 
   // ── Round of 16 (89–96) ─────────────────────────────────────
   { id: 89, round: 'R16', home: 'W74', away: 'W77', kickoff: '2026-07-06T18:00:00Z' },
