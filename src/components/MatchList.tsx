@@ -169,30 +169,46 @@ export function MatchList({ player }: Props) {
             Knockout matches will appear here once the host sets the teams after each round.
           </p>
         ) : (
-          <div className="ml-matches">
-            {knockoutReady.map(m => {
-              const { home, away } = resolvedKO[m.id]!;
-              const open   = isOpen(m.kickoff, home, away);
-              const kicked = now >= new Date(m.kickoff).getTime();
-              const pick   = picks[m.id];
-              return (
-                <MatchRow
-                  key={m.id}
-                  matchId={m.id}
-                  home={home}
-                  away={away}
-                  kickoff={m.kickoff}
-                  pick={pick}
-                  result={results[m.id]?.result}
-                  open={open}
-                  kicked={kicked}
-                  isKnockout={true}
-                  onPick={o => setPick(m.id, o)}
-                  icon={resultIcon(m.id)}
-                />
-              );
-            })}
-          </div>
+          (() => {
+            const byDate: Record<string, typeof knockoutReady> = {};
+            for (const m of knockoutReady) {
+              const d = new Date(m.kickoff);
+              const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+              if (!byDate[key]) byDate[key] = [];
+              byDate[key].push(m);
+            }
+            return Object.entries(byDate).sort(([a],[b]) => a.localeCompare(b)).map(([date, matches]) => (
+              <div key={date} className="ml-day">
+                <div className="ml-day-label">
+                  {new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
+                </div>
+                <div className="ml-matches">
+                  {matches.map(m => {
+                    const { home, away } = resolvedKO[m.id]!;
+                    const open   = isOpen(m.kickoff, home, away);
+                    const kicked = now >= new Date(m.kickoff).getTime();
+                    const pick   = picks[m.id];
+                    return (
+                      <MatchRow
+                        key={m.id}
+                        matchId={m.id}
+                        home={home}
+                        away={away}
+                        kickoff={m.kickoff}
+                        pick={pick}
+                        result={results[m.id]?.result}
+                        open={open}
+                        kicked={kicked}
+                        isKnockout={true}
+                        onPick={o => setPick(m.id, o)}
+                        icon={resultIcon(m.id)}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            ));
+          })()
         )}
       </section>
     </div>
