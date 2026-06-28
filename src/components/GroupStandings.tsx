@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { GROUP_FIXTURES } from '../data/groupFixtures';
 import { GROUPS } from '../data/teams';
-import type { GroupId, Outcome } from '../types';
+import type { GroupId, Outcome, Results } from '../types';
 import './GroupStandings.css';
 
 interface TeamStats {
@@ -47,29 +47,36 @@ function computeGroupStats(
 
 export function GroupStandings() {
   const [results, setResults] = useState<Record<number, Outcome | null>>({});
+  const [bestThirds, setBestThirds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
-      const { data } = await supabase
-        .from('match_results')
-        .select('match_id, result');
-      if (data) {
+      const [{ data: matchData }, { data: actualData }] = await Promise.all([
+        supabase.from('match_results').select('match_id, result'),
+        supabase.from('results').select('data').eq('id', 1).single(),
+      ]);
+      if (matchData) {
         const map: Record<number, Outcome | null> = {};
-        for (const r of data) map[r.match_id] = r.result as Outcome | null;
+        for (const r of matchData) map[r.match_id] = r.result as Outcome | null;
         setResults(map);
       }
+      setBestThirds((actualData?.data as Results)?.bestThirds ?? []);
       setLoading(false);
     }
 
     load();
 
-    const channel = supabase
+    const ch1 = supabase
       .channel('group_standings_live')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'match_results' }, () => load())
       .subscribe();
+    const ch2 = supabase
+      .channel('group_standings_actual')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'results' }, () => load())
+      .subscribe();
 
-    return () => { supabase.removeChannel(channel); };
+    return () => { supabase.removeChannel(ch1); supabase.removeChannel(ch2); };
   }, []);
 
   const groups = useMemo(
@@ -102,17 +109,22 @@ export function GroupStandings() {
                 </tr>
               </thead>
               <tbody>
-                {standings.map((s, i) => (
-                  <tr key={s.team} className={i < 2 ? 'gs-top2' : ''}>
+                {standings.map((s, i) => {
+                  const isTop2 = i < 2;
+                  const isQualThird = i === 2 && bestThirds.includes(s.team);
+                  const cls = isTop2 ? 'gs-top2' : isQualThird ? 'gs-qual-third' : '';
+                  return (
+                  <tr key={s.team} className={cls}>
                     <td className="gs-pos">{i + 1}</td>
-                    <td className="gs-team">{s.team}</td>
+                    <td className="gs-team">{s.team}{isQualThird ? ' ✓' : ''}</td>
                     <td>{s.p}</td>
                     <td>{s.w}</td>
                     <td>{s.d}</td>
                     <td>{s.l}</td>
                     <td className="gs-pts">{s.pts}</td>
                   </tr>
-                ))}
+                  );
+                })}
               </tbody>
             </table>
           </div>

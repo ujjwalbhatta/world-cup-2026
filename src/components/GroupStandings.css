@@ -98,13 +98,23 @@
   color: #e2e8f0;
 }
 
-/* top 2 rows get a subtle green tint */
+/* top 2 — green */
 .gs-table tbody tr.gs-top2 td.gs-team {
   color: #86efac;
 }
-
 .gs-table tbody tr.gs-top2 td.gs-pts {
   color: #86efac;
+}
+
+/* qualifying 3rd-place — amber */
+.gs-table tbody tr.gs-qual-third {
+  background: rgba(234, 179, 8, 0.06);
+}
+.gs-table tbody tr.gs-qual-third td.gs-team {
+  color: #fcd34d;
+}
+.gs-table tbody tr.gs-qual-third td.gs-pts {
+  color: #fcd34d;
 }
 
 @media (max-width: 600px) {
