@@ -64,7 +64,9 @@ export function MatchList({ player }: Props) {
     for (const fixtures of Object.values(map)) {
       fixtures.sort((a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime());
     }
-    return Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
+    return Object.entries(map)
+      .filter(([date]) => date !== '2026-06-27')
+      .sort(([a], [b]) => a.localeCompare(b));
   }, []);
 
   // Knockout matches whose teams are resolved from the actual bracket
