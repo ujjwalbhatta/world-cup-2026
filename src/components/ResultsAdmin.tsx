@@ -360,13 +360,17 @@ function KnockoutTab({ actual, setActual }: {
     setActual(next);
     await Promise.all([
       saveActualResults(next),
-      // Also update match_results for Match Predictor scoring
-      supabase.from('match_results').upsert({
-        match_id: matchId,
-        home: resolved[matchId]?.home ?? '',
-        away: resolved[matchId]?.away ?? '',
-        result: resolved[matchId]?.home === team ? 'home' : 'away',
-      }),
+      // Also update match_results for Match Predictor scoring.
+      // On undo (team === '') delete the row instead of upserting — otherwise
+      // the ternary below has no valid outcome to fall back on and writes a fake result.
+      team
+        ? supabase.from('match_results').upsert({
+            match_id: matchId,
+            home: resolved[matchId]?.home ?? '',
+            away: resolved[matchId]?.away ?? '',
+            result: resolved[matchId]?.home === team ? 'home' : 'away',
+          })
+        : supabase.from('match_results').delete().eq('match_id', matchId),
     ]);
   }
 
