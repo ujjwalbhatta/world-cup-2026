@@ -77,20 +77,60 @@ export function MatchList({ player }: Props) {
     });
   }, [resolvedKO]);
 
+  // Knockout fixtures grouped by local calendar date, chronological
+  const knockoutByDate = useMemo(() => {
+    const map: Record<string, typeof knockoutReady> = {};
+    for (const m of knockoutReady) {
+      const d = new Date(m.kickoff);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      if (!map[key]) map[key] = [];
+      map[key].push(m);
+    }
+    return Object.entries(map).sort(([a], [b]) => a.localeCompare(b));
+  }, [knockoutReady]);
+
   const dayRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
-  function scrollToDay(date: string) {
-    dayRefs.current[date]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  function scrollToDay(key: string) {
+    dayRefs.current[key]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Find the current or next upcoming match day
+  // Unified, chronological list of every match day across both stages,
+  // used to figure out which day is "current" so it can be shown first.
+  const allDays = useMemo(() => {
+    const group = groupedByDate.map(([date, fixtures]) => ({
+      key: `group-${date}`,
+      date,
+      section: 'group' as const,
+      lastKickoff: Math.max(...fixtures.map(f => new Date(f.kickoff).getTime())),
+    }));
+    const knockout = knockoutByDate.map(([date, matches]) => ({
+      key: `ko-${date}`,
+      date,
+      section: 'knockout' as const,
+      lastKickoff: Math.max(...matches.map(m => new Date(m.kickoff).getTime())),
+    }));
+    return [...group, ...knockout].sort((a, b) => a.date.localeCompare(b.date));
+  }, [groupedByDate, knockoutByDate]);
+
+  // Find the current or next upcoming match day (across both stages) —
+  // this is the day we auto-scroll to so the matches still open for
+  // prediction show up first instead of being buried under finished ones.
   const activeDay = useMemo(() => {
-    for (const [date] of groupedByDate) {
-      const d = new Date(date + 'T23:59:59');
-      if (d.getTime() >= now) return date;
+    for (const day of allDays) {
+      if (day.lastKickoff + LOCK_BEFORE_MS >= now) return day.key;
     }
-    return groupedByDate[groupedByDate.length - 1]?.[0] ?? '';
-  }, [groupedByDate, now]);
+    return allDays[allDays.length - 1]?.key ?? '';
+  }, [allDays, now]);
+
+  const hasAutoScrolled = useRef(false);
+  useEffect(() => {
+    if (hasAutoScrolled.current) return;
+    if (!activeDay || loading) return;
+    hasAutoScrolled.current = true;
+    // Wait a tick so the day refs have mounted before scrolling.
+    requestAnimationFrame(() => scrollToDay(activeDay));
+  }, [activeDay, loading]);
 
   if (loading) return <div className="ml-loading">Loading matches…</div>;
 
@@ -112,13 +152,13 @@ export function MatchList({ player }: Props) {
     <div className="ml-wrap">
       {/* ── Day strip ── */}
       <div className="ml-day-strip">
-        {groupedByDate.map(([date]) => {
+        {allDays.map(({ key, date }) => {
           const label = new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
           return (
             <button
-              key={date}
-              className={`ml-day-tab ${date === activeDay ? 'active' : ''}`}
-              onClick={() => scrollToDay(date)}
+              key={key}
+              className={`ml-day-tab ${key === activeDay ? 'active' : ''}`}
+              onClick={() => scrollToDay(key)}
             >
               {label}
             </button>
@@ -131,7 +171,7 @@ export function MatchList({ player }: Props) {
         <h3 className="ml-section-title">Group Stage — Jun 11–29</h3>
 
         {groupedByDate.map(([date, fixtures]) => (
-          <div key={date} className="ml-day" ref={el => { dayRefs.current[date] = el; }}>
+          <div key={date} className="ml-day" ref={el => { dayRefs.current[`group-${date}`] = el; }}>
             <div className="ml-day-label">
               {new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
             </div>
@@ -171,16 +211,8 @@ export function MatchList({ player }: Props) {
             Knockout matches will appear here once the host sets the teams after each round.
           </p>
         ) : (
-          (() => {
-            const byDate: Record<string, typeof knockoutReady> = {};
-            for (const m of knockoutReady) {
-              const d = new Date(m.kickoff);
-              const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-              if (!byDate[key]) byDate[key] = [];
-              byDate[key].push(m);
-            }
-            return Object.entries(byDate).sort(([a],[b]) => a.localeCompare(b)).map(([date, matches]) => (
-              <div key={date} className="ml-day">
+          knockoutByDate.map(([date, matches]) => (
+              <div key={date} className="ml-day" ref={el => { dayRefs.current[`ko-${date}`] = el; }}>
                 <div className="ml-day-label">
                   {new Date(date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}
                 </div>
@@ -209,8 +241,7 @@ export function MatchList({ player }: Props) {
                   })}
                 </div>
               </div>
-            ));
-          })()
+          ))
         )}
       </section>
     </div>

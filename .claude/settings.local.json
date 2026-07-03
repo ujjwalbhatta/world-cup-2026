@@ -20,7 +20,22 @@
       "Bash(git *)",
       "Bash(vercel ls *)",
       "Bash(vercel env *)",
-      "Bash(vercel *)"
+      "Bash(vercel *)",
+      "Bash(grep -E '\\\\.\\(ts|tsx|js|json\\)$')",
+      "WebSearch",
+      "Bash(npx tsc *)",
+      "WebFetch(domain:www.sofascore.com)",
+      "WebFetch(domain:api.football-data.org)",
+      "WebFetch(domain:site.api.espn.com)",
+      "WebFetch(domain:site.web.api.espn.com)",
+      "WebFetch(domain:worldcup-bracket-prediction.vercel.app)",
+      "Bash(python3 -m json.tool)",
+      "Bash(python3 -c ' *)",
+      "Bash(lsof -i :5173 -sTCP:LISTEN)",
+      "Skill(run)",
+      "Bash(timeout 30 bash -c 'until curl -sf http://localhost:5173 >/dev/null 2>&1; do sleep 1; done')",
+      "Bash(npx --no-install playwright --version)",
+      "Bash(npm ls *)"
     ]
   }
 }
