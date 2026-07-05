@@ -28,26 +28,26 @@ export const KNOCKOUT_MATCHES: KnockoutMatch[] = [
   { id: 88, round: 'R32', home: '2D',              away: '2G',              kickoff: '2026-07-03T18:00:00Z' }, // 1 PM CDT Jul 3
 
   // ── Round of 16 (89–96) ─────────────────────────────────────
-  { id: 89, round: 'R16', home: 'W74', away: 'W77', kickoff: '2026-07-06T18:00:00Z' },
-  { id: 90, round: 'R16', home: 'W73', away: 'W75', kickoff: '2026-07-06T21:00:00Z' },
-  { id: 91, round: 'R16', home: 'W76', away: 'W78', kickoff: '2026-07-07T18:00:00Z' },
-  { id: 92, round: 'R16', home: 'W79', away: 'W80', kickoff: '2026-07-07T21:00:00Z' },
-  { id: 93, round: 'R16', home: 'W83', away: 'W84', kickoff: '2026-07-08T18:00:00Z' },
-  { id: 94, round: 'R16', home: 'W81', away: 'W82', kickoff: '2026-07-08T21:00:00Z' },
-  { id: 95, round: 'R16', home: 'W86', away: 'W88', kickoff: '2026-07-09T18:00:00Z' },
-  { id: 96, round: 'R16', home: 'W85', away: 'W87', kickoff: '2026-07-09T21:00:00Z' },
+  { id: 89, round: 'R16', home: 'W74', away: 'W77', kickoff: '2026-07-04T21:00:00Z' }, // Paraguay vs France, 5 PM ET Jul 4
+  { id: 90, round: 'R16', home: 'W73', away: 'W75', kickoff: '2026-07-04T17:00:00Z' }, // Canada vs Morocco, 1 PM ET Jul 4
+  { id: 91, round: 'R16', home: 'W76', away: 'W78', kickoff: '2026-07-05T20:00:00Z' }, // Brazil vs Norway, 4 PM ET Jul 5
+  { id: 92, round: 'R16', home: 'W79', away: 'W80', kickoff: '2026-07-06T00:00:00Z' }, // Mexico vs England, 6 PM local / 8 PM ET Jul 5
+  { id: 93, round: 'R16', home: 'W83', away: 'W84', kickoff: '2026-07-06T19:00:00Z' }, // Portugal vs Spain, 3 PM ET Jul 6
+  { id: 94, round: 'R16', home: 'W81', away: 'W82', kickoff: '2026-07-07T00:00:00Z' }, // USA vs Belgium, 8 PM ET Jul 6
+  { id: 95, round: 'R16', home: 'W86', away: 'W88', kickoff: '2026-07-07T16:00:00Z' }, // Argentina vs Egypt, 12 PM ET Jul 7
+  { id: 96, round: 'R16', home: 'W85', away: 'W87', kickoff: '2026-07-07T20:00:00Z' }, // Switzerland vs Colombia, 4 PM ET Jul 7
 
   // ── Quarter-finals (97–100) ──────────────────────────────────
-  { id:  97, round: 'QF', home: 'W89', away: 'W90', kickoff: '2026-07-10T18:00:00Z' },
-  { id:  98, round: 'QF', home: 'W93', away: 'W94', kickoff: '2026-07-10T21:00:00Z' },
-  { id:  99, round: 'QF', home: 'W91', away: 'W92', kickoff: '2026-07-11T18:00:00Z' },
-  { id: 100, round: 'QF', home: 'W95', away: 'W96', kickoff: '2026-07-11T21:00:00Z' },
+  { id:  97, round: 'QF', home: 'W89', away: 'W90', kickoff: '2026-07-09T20:00:00Z' }, // Foxborough, 4 PM ET Jul 9
+  { id:  98, round: 'QF', home: 'W93', away: 'W94', kickoff: '2026-07-10T19:00:00Z' }, // Inglewood, 3 PM ET Jul 10
+  { id:  99, round: 'QF', home: 'W91', away: 'W92', kickoff: '2026-07-11T21:00:00Z' }, // Miami Gardens, 5 PM ET Jul 11
+  { id: 100, round: 'QF', home: 'W95', away: 'W96', kickoff: '2026-07-12T01:00:00Z' }, // Kansas City, 8 PM local / 9 PM ET Jul 11
 
   // ── Semi-finals (101–102) ────────────────────────────────────
-  { id: 101, round: 'SF', home: 'W97',  away: 'W98',  kickoff: '2026-07-14T21:00:00Z' },
-  { id: 102, round: 'SF', home: 'W99',  away: 'W100', kickoff: '2026-07-15T21:00:00Z' },
+  { id: 101, round: 'SF', home: 'W97',  away: 'W98',  kickoff: '2026-07-14T19:00:00Z' }, // Arlington, 3 PM ET Jul 14
+  { id: 102, round: 'SF', home: 'W99',  away: 'W100', kickoff: '2026-07-15T19:00:00Z' }, // Atlanta, 3 PM ET Jul 15
 
   // ── Third place (103) & Final (104) ─────────────────────────
-  { id: 103, round: '3P', home: 'L101', away: 'L102', kickoff: '2026-07-18T21:00:00Z' },
-  { id: 104, round: 'F',  home: 'W101', away: 'W102', kickoff: '2026-07-19T21:00:00Z' },
+  { id: 103, round: '3P', home: 'L101', away: 'L102', kickoff: '2026-07-18T21:00:00Z' }, // Miami Gardens, 5 PM ET Jul 18
+  { id: 104, round: 'F',  home: 'W101', away: 'W102', kickoff: '2026-07-19T19:00:00Z' }, // MetLife, 3 PM ET Jul 19
 ];
