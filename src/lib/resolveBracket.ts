@@ -8,6 +8,13 @@ export function resolveBracket(pred: Prediction): Record<number, { home: string;
 
   // Helper: get the team a player picked to win match X
   const winnerOf = (matchId: number): string => pred.winners[matchId] ?? '';
+  // Helper: get the team eliminated in match X (whichever side isn't the picked winner)
+  const loserOf = (matchId: number): string => {
+    const { home, away } = resolved[matchId] ?? {};
+    const w = winnerOf(matchId);
+    if (!w || !home || !away) return '';
+    return w === home ? away : home;
+  };
 
   // Resolve the third-place slot assignment from the player's bestThirds selection
   function resolveThird(slot: string): string {
@@ -104,7 +111,7 @@ export function resolveBracket(pred: Prediction): Record<number, { home: string;
   resolved[102] = { home: winnerOf(99), away: winnerOf(100) };
 
   // 3rd place + Final
-  resolved[103] = { home: '', away: '' }; // losers — not tracked in picks
+  resolved[103] = { home: loserOf(101), away: loserOf(102) };
   resolved[104] = { home: winnerOf(101), away: winnerOf(102) };
 
   return resolved;

@@ -317,6 +317,7 @@ const KO_ROUNDS = [
   { label: 'Round of 16',    ids: [89,90,91,92,93,94,95,96] },
   { label: 'Quarter-finals', ids: [97,98,99,100] },
   { label: 'Semi-finals',    ids: [101,102] },
+  { label: 'Third Place',    ids: [103] },
   { label: 'Final',          ids: [104] },
 ];
 
@@ -427,7 +428,10 @@ function pruneDownstream(
   const queue = [matchId];
   while (queue.length) {
     const cur = queue.shift()!;
-    const next = KNOCKOUT_MATCHES.filter(m => m.home === `W${cur}` || m.away === `W${cur}`);
+    const next = KNOCKOUT_MATCHES.filter(
+      m => m.home === `W${cur}` || m.away === `W${cur}`
+        || m.home === `L${cur}` || m.away === `L${cur}`,
+    );
     for (const m of next) {
       const { home = '', away = '' } = resolved[m.id] ?? {};
       const curPick = winners[m.id];

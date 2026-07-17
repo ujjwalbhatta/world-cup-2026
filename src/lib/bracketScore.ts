@@ -1,11 +1,11 @@
 import type { Prediction, Results, GroupId } from '../types';
 
 const ROUND_PTS: Record<number, number> = {};
-// R32 matches 73-88 → 2pts, R16 89-96 → 3pts, QF 97-100 → 5pts, SF 101-102 → 8pts, F 104 → 15pts
+// R32 matches 73-88 → 2pts, R16 89-96 → 3pts, QF 97-100 → 5pts, SF 101-102 → 8pts, 3P 103 → 5pts, F 104 → 15pts
 for (let i = 73; i <= 88;  i++) ROUND_PTS[i] = 2;
 for (let i = 89; i <= 96;  i++) ROUND_PTS[i] = 3;
 for (let i = 97; i <= 100; i++) ROUND_PTS[i] = 5;
-ROUND_PTS[101] = 8; ROUND_PTS[102] = 8; ROUND_PTS[104] = 15;
+ROUND_PTS[101] = 8; ROUND_PTS[102] = 8; ROUND_PTS[103] = 5; ROUND_PTS[104] = 15;
 
 export function calcBracketScore(pred: Prediction, actual: Results): number {
   let score = 0;

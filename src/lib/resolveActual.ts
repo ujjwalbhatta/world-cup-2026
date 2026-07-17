@@ -9,6 +9,12 @@ export function resolveActualBracket(
   const resolved: Record<number, { home: string; away: string }> = {};
 
   const winnerOf = (id: number) => actualWinners[id] ?? '';
+  const loserOf = (id: number) => {
+    const { home, away } = resolved[id] ?? {};
+    const w = winnerOf(id);
+    if (!w || !home || !away) return '';
+    return w === home ? away : home;
+  };
 
   function groupPos(pos: string): string {
     const rank  = pos[0];
@@ -72,6 +78,7 @@ export function resolveActualBracket(
 
   resolved[101] = { home: winnerOf(97),  away: winnerOf(98) };
   resolved[102] = { home: winnerOf(99),  away: winnerOf(100) };
+  resolved[103] = { home: loserOf(101),  away: loserOf(102) };
   resolved[104] = { home: winnerOf(101), away: winnerOf(102) };
 
   return resolved;

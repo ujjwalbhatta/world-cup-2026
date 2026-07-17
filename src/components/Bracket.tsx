@@ -14,6 +14,7 @@ const ROUND_SECTIONS = [
   { key: 'R16', label: 'Round of 16',    ids: [89,90,91,92,93,94,95,96] },
   { key: 'QF',  label: 'Quarter-finals', ids: [97,98,99,100] },
   { key: 'SF',  label: 'Semi-finals',    ids: [101,102] },
+  { key: '3P',  label: 'Third Place',    ids: [103] },
   { key: 'F',   label: 'Final',          ids: [104] },
 ];
 
@@ -53,7 +54,8 @@ export function Bracket({ player }: Props) {
     while (queue.length) {
       const cur = queue.shift()!;
       const next = KNOCKOUT_MATCHES.filter(
-        m => m.home === `W${cur}` || m.away === `W${cur}`,
+        m => m.home === `W${cur}` || m.away === `W${cur}`
+          || m.home === `L${cur}` || m.away === `L${cur}`,
       );
       for (const m of next) {
         const pick = prediction.winners[m.id];
